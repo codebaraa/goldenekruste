@@ -1,0 +1,722 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0; // Globaler Reset!
+}
+
+html {
+    font-size: 62.5%;
+}
+
+// Variables
+// Variables
+$primary-color: hsl(54, 80%, 59%);
+$secondary-color: hsl(0, 0%, 25%);
+$background-color: hsl(31, 11%, 57%);
+$menu-bg: hsla(0, 0%, 4%, 0.82);
+$black-color: hsl(0, 0%, 0%);
+$baige-color: hsla(0, 0%, 100%, 0.654);
+$gold-color: hsla(47, 85%, 54%, 0.792);
+$nav-color: hsl(40, 5%, 66%);
+$white-color: hsla(42, 39%, 94%, 0.782);
+$pinkbcg-color: rgb(255, 193, 202);
+$transition-speed: 0.7s;
+$primary-font: 8rem;
+$title-font: 1.5rem;
+$link-font: 1.8rem;
+$desktop-font: 1.5rem;
+$lastp-font: 2.5rem;
+$p-font: 2rem;
+
+// Z-Index System (Synchron mit index.scss)
+$z-index-bottom: -1;
+$z-index-base: 1;
+$z-index-overlay: 50;
+$z-index-offscreen: 100;
+$z-index-menu: 150;
+
+// Media Query Mixins (Mobile First - min-width)
+@mixin respond-to($breakpoint) {
+    @if $breakpoint == medium {
+        @media (min-width: 768px) {
+            @content;
+        }
+    } @else if $breakpoint == large {
+        @media (min-width: 992px) {
+            @content;
+        }
+    } @else if $breakpoint == xlarge {
+        @media (min-width: 1200px) {
+            @content;
+        }
+    }
+}
+
+// Body Styles
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: $pinkbcg-color;
+}
+
+// Menu Bar (Hamburger)
+.menu__bar {
+	display: block;
+	position: fixed;
+	top: 0;
+	right: 0;
+	height: 6rem;
+	width: 6rem;
+	z-index: 9999;
+	cursor: pointer;
+
+	&-span {
+		position: relative;
+		top: 1.5rem;
+        left: 0.5rem;
+        height: 3rem;
+        width: 5rem;
+		filter: drop-shadow(2px 2px 10px rgba(0, 0, 0, 0.294)) invert(4%);
+		text-decoration: none;
+		overflow: hidden;
+	}
+	@include respond-to(large) {
+		display: none;
+	}
+}
+
+.span {
+	display: block;
+	position: absolute;
+	height: 0.24rem;
+	width: 100%;
+	background-color: $baige-color;
+	border-radius: 25px;
+	top: 50%;
+	left: 50%;
+	z-index: $z-index-menu;
+	transition: all 0.3s ease;
+	@include respond-to(large) {
+        display: none; // Ab Tablet verstecken
+    }
+
+	&.span1 {
+		top: 30%;
+		&.active {
+			width: 70%;
+			left: 20%;
+			top: 50%;
+			transform: rotate(45deg);
+		}
+		&.black{background-color: $black-color;}
+		&.white{background-color: $baige-color;}
+	}
+	&.span2 {
+		top: 50%;
+		&.active {display: none;}
+		&.black{background-color: $black-color;}
+	}
+	&.span3 {
+		top: 70%;
+		&.active {
+			width: 70%;
+			left: 20%;
+			top: 50%;
+			transform: rotate(-45deg);
+		}
+		&.black{background-color: $black-color;}
+		&.white{background-color: $baige-color;}
+	}
+}
+
+// Off-screen Menu
+.menu__offscreen {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: $black-color;
+    margin-right: -20rem;
+    width: 20rem;
+    height: 100vh;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    transition: 0.7s ease;
+    z-index: $z-index-offscreen;
+
+    &.active {
+        padding-top: 4rem;
+        margin-right: 0;
+        width: 100vw;
+    }
+
+    &-above, &-down {
+        padding-right: 2.5rem;
+        & a {
+            display: block;
+            color: $white-color;
+            text-decoration: none;
+            text-align: end;
+            cursor: default; // Mobile
+        }
+    }
+
+    &-above a {
+        padding-top: 4rem;
+        font-size: $link-font;
+
+        @include respond-to(large) {
+            cursor: pointer;
+            &:hover {
+                color: $nav-color;
+                transition: all 1s ease;
+            }
+        }
+    }
+
+    &-down {
+        position: absolute;
+        top: 300px;
+        right: 0;
+        & a {
+            padding-bottom: 1rem;
+            font-size: 1.4rem;
+
+            @include respond-to(large) {
+                cursor: pointer;
+                &:hover {
+                    color: $nav-color;
+                    transition: all 1s ease;
+                }
+            }
+        }
+    }
+}
+
+//Desktop Menu
+.desktop__menu {
+    position: absolute; // Mobile Basis
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    top: 0;
+    z-index: $z-index-overlay;
+
+    @include respond-to(large) {
+        background-color: rgba(0, 0, 0, 0.35);
+        position: fixed;
+    }
+
+    &-ul {
+        display: none; // Mobile
+        
+        @include respond-to(large) {
+            display: flex;
+            height: 7rem;
+            padding: 1.2rem;
+            justify-content: space-evenly;
+            align-items: center;
+            list-style: none;
+            z-index: $z-index-base;
+        }
+
+        li {
+            width: 11rem;
+            height: 100%;
+            margin: auto 0;
+            text-align: center;
+            font-weight: 500;
+            font-size: $desktop-font;
+            align-content: center;
+
+            a {
+                color: $white-color;
+                text-decoration: none;
+                text-shadow: 1px 1px 2px rgba(67, 66, 66, 0.071),
+                    0 0 1em rgba(76, 75, 75, 0.124), 0 0 0.2em rgba(71, 71, 71, 0.068);
+            }
+        }
+    }
+
+    &-logo {
+        height: 6rem;
+        width: 6rem;
+        padding: 1rem;
+
+        @include respond-to(large) {
+            height: 9rem;
+            width: 9rem;
+            padding: 2rem;
+        }
+
+        &-img {
+            width: 100%;
+            margin: 0 auto;
+        }
+    }
+}
+
+// Header
+.header__title {
+    width: 70%;
+    margin: 0 auto;
+    padding: 10rem 0 0 0; // Mobile
+    font-size: 3rem; // Mobile
+    text-align: center;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(67, 66, 66, 0.194),
+        0 0 1em rgba(76, 75, 75, 0.219), 0 0 0.2em rgba(71, 71, 71, 0.149);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+
+    @include respond-to(medium) {
+        font-size: 4rem;
+        padding: 16rem 0 2rem 0;
+    }
+
+    @include respond-to(large) {
+        font-size: 5rem;
+    }
+
+    &-text {
+        margin: 4rem 0;
+        padding: 4rem 7rem; // Mobile
+        color: #9d708f;
+        width: 100%;
+        text-align: center;
+        font-size: 1.5rem; // Mobile
+        line-height: 2rem;
+
+        @include respond-to(medium) {
+            padding: 2rem 20rem 12rem 20rem;
+            font-size: $p-font;
+        }
+
+        @include respond-to(large) {
+            padding: 2rem 25rem 12rem 25rem;
+        }
+    }
+}
+
+//Main Section
+.main {
+    width: 100%;
+    padding: 6rem 0;
+    background-color: #fdd6de;
+}
+
+.kurse {
+    display: flex;
+    flex-direction: column; // Mobile Basis
+    justify-content: space-around;
+    align-items: center;
+
+    @include respond-to(large) {
+        flex-direction: row;
+    }
+
+    &__cards-background {
+        width: 35rem; // Mobile Basis
+        padding: 3rem;
+        margin: 0 auto;
+
+        @include respond-to(medium) {
+            width: 60rem;
+            padding: 5rem;
+        }
+         @include respond-to(large) {
+             width: 45rem;
+             padding: 3rem;
+        }
+    }
+
+    &__cards-container {
+		position: relative;
+        height: 30rem;
+        padding: 1.5rem;
+        border-radius: 5px;
+        overflow: hidden;
+        transition: all 1.3s;
+		cursor: pointer;
+        overflow: hidden;
+		&:hover, &.active {
+			padding: 0.7rem;
+            .kurse__cards-container-div {
+                background-color: #ffffffe6;
+                opacity: 1;
+                border-color: #ffffff;
+            }
+            .kurse__cards-container-div-beschB,
+            .kurse__cards-container-div-beschC,
+            .kurse__cards-container-div-beschM,
+            .card__btn,
+            .priceB,
+            .priceC,
+            .priceM 
+            [class^="price"] {
+                display: block !important;
+            }
+        }
+
+        &-div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            padding: 2rem;
+            border-radius: 5px;
+            border: 2px solid #ffffff;
+            background-color: rgba(255, 255, 255, 0); // Transparent
+            transition: all 0.4s ease-in-out;
+            position: relative;
+            opacity: 0;
+
+            &-beschB,
+            &-beschC,
+            &-beschM {
+                display: none; // Default: Versteckt
+                width: 100%;
+                height: auto;
+                padding: 0.8rem; // Mobile
+                margin-bottom: 2rem;
+                color: #503a1c;
+                font-weight: 500;
+                font-size: 1.1rem; // Mobile
+                text-align: center;
+                align-content: center;
+                line-height: 1.8rem;
+                transition: all 1.3s;
+
+                @include respond-to(medium) {
+                    padding: 1rem;
+                    font-size: 1.2rem;
+                    line-height: 1.5rem;
+                }
+                 
+                 @include respond-to(large) {
+                    padding: 0.2rem;
+                    font-size: 1.2rem;
+                    line-height: 1.4rem;
+                }
+            }
+
+            .kurse__cards-container-div-beschB,
+            .kurse__cards-container-div-beschC,
+            .kurse__cards-container-div-beschM,
+            .card__btn,
+            [class^="price"] {
+            display: block !important;
+            }
+        }
+    }
+
+    &__text {
+        height: 4rem;
+        padding: 2rem 0;
+        align-content: center;
+        font-size: 1.5rem; // Mobile
+        text-align: center;
+        font-family: 'Playfair Display', serif;
+        font-weight: 500;
+        color: #725a39;
+
+        @include respond-to(medium) {
+            font-size: 2rem;
+        }
+    }
+}
+
+.bckg-img1 {
+    background-image: url('../fotos/bread1.jpeg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.bckg-img2 {
+    background-image: url('../fotos/Kuchen1.jpeg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.bckg-img3 {
+    background-image: url('../fotos/macarons1.jpeg');
+    background-position: 50% 60%;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.priceB,
+.priceC,
+.priceM {
+    display: none; // Default versteckt
+    width: 100%;
+    margin: 0 auto;
+    color: #503a1c;
+    font-weight: 500;
+    font-size: 0.9rem; // Mobile
+    text-align: center;
+    align-content: center;
+    line-height: 1rem; // Mobile
+    transition: all 1.3s;
+
+    @include respond-to(medium) {
+        font-size: 1.5rem;
+        line-height: $p-font;
+    }
+     @include respond-to(large) {
+        font-size: 1.2rem;
+        line-height: $p-font;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+.bread1::before { content: 'Lernen Sie, wie man Sauerteig, Ciabatta und rustikales Brot selbst backt – von der Wahl der besten Zutaten bis zur Kunst des Gärens.'; }
+.bread2::before { content: 'Wir zeigen Ihnen, wie Sie Brotsorten wie Sauerteig, Ciabatta und rustikales Brot von Grund auf selbst backen. Dabei erfahren Sie alles über die Wahl der richtigen Zutaten und die Kunst des Gärens, um den perfekten Teig und einen herrlich duftenden Laib Brot zu kreieren.'; }
+.cake1::before { content: 'Im Mittelpunkt steht die Kunst, traumhafte Kuchen und Törtchen zu backen – von Biskuitteig bis kreativen Dekorationen.'; }
+.cake2::before { content: 'Hier dreht sich alles um die Herstellung von traumhaften Kuchen und Törtchen. Vom Biskuitteig bis hin zu kreativen Dekorationstechniken – Sie können Ihrer Fantasie freien Lauf lassen und lernen, wie man süße Meisterwerke kreiert, die nicht nur lecker, sondern auch ein optisches Highlight sind.'; }
+.macaron1::before { content: 'Hier geht es darum, traumhafte Kuchen und Törtchen zu backen – von Biskuitteig bis kreativen Dekorationen.'; }
+.macaron2::before { content: 'Erfahren Sie alles über die Kunst, Macarons zu backen. Sie lernen, wie man die charakteristische, knusprige Schale und die zarte Füllung perfekt hinbekommt. Mit verschiedenen Aromen und Farben gestalten Sie Ihre eigenen Macarons und erlernen professionelle Techniken der Dekoration.'; }
+.break::after { content: '\A'; white-space: pre; }
+
+.card__btn {
+    display: none; // Default versteckt
+    position: absolute;
+    width: auto;
+    min-width: 10rem;
+    margin-bottom: 2rem;
+    margin-top: auto;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0.8rem 2rem;
+    bottom: 0;
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    border: none;
+    color: rgb(234, 234, 234);
+    background-color: #463114;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; // Mobile
+    cursor: default; // Mobile
+	z-index: 1000;
+
+
+    @include respond-to(medium) {
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.8s;
+    }
+
+    @include respond-to(large) {
+        font-size: 1.3rem;
+        cursor: pointer;
+        transition: all 0.8s;
+
+        &:hover {
+            background-color: rgb(234, 234, 234);
+            color: #463114;
+            outline: 2px solid #463114;
+        }
+    }
+}
+
+//Gutschein
+.gutschein {
+    display: flex;
+    width: 350px; // Mobile Basis
+    height: auto;
+    flex-direction: column;
+    margin: 15rem auto;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+
+    @include respond-to(medium) {
+        width: 100%; // max-width überschreibt das
+        max-width: 500px;
+    }
+
+    &__title {
+        margin: 3rem 0 1.5rem 0;
+        font-family: 'Playfair Display', serif;
+        font-size: 2rem;
+        color: #503a1c;
+    }
+
+    &__p {
+        width: 30rem; // Mobile
+        padding: 0 1rem; // Mobile
+        font-size: 1.2rem; // Mobile
+        line-height: 1.7rem; // Mobile
+        color: #503a1c;
+        flex-wrap: wrap;
+
+        @include respond-to(medium) {
+            width: 40rem;
+            font-size: 1.4rem;
+            line-height: 2rem;
+            padding: 0;
+        }
+    }
+
+    &__btn {
+        width: 14rem;
+        margin: 1.5rem 0 3rem 0;
+        padding: 1rem;
+        border: none;
+        color: rgb(234, 234, 234);
+        background-color: #463114;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.3rem;
+        cursor: default; // Mobile
+		&.clicked {
+            background-color: #eaeaea !important; // Wichtig für Override
+            color: #463114 !important;
+        }
+
+        @include respond-to(large) {
+            cursor: pointer;
+            transition: all 0.5s;
+
+            &:hover {
+                width: 15rem;
+                background-color: rgb(234, 234, 234);
+                color: #463114;
+                outline: 2px solid #463114;
+            }
+        }
+    }
+}
+
+.separate-bar {
+    margin: 1rem auto 6rem auto;
+    width: 200px;
+    height: 2px;
+    border-radius: 1000000000px;
+    background-color: $gold-color;
+
+    &.dark {
+        background-color: $secondary-color;
+        width: 100%;
+    }
+}
+
+//Footer
+.footer {
+    color: $gold-color;
+    background-color: $white-color;
+    height: 100%;
+    padding: 2rem 0 2rem 0;
+
+    &__div {
+        display: flex;
+        flex-direction: column; // Mobile Basis
+        margin: 5rem auto;
+
+        @include respond-to(medium) {
+            flex-direction: row;
+            justify-content: space-around;
+            padding: 5rem 0 0 0;
+            margin: 0 auto;
+        }
+
+        &-ul {
+            display: flex;
+            width: 13rem; // Mobile
+            margin: 0 auto;
+            justify-content: space-around;
+            align-items: center;
+
+            @include respond-to(medium) {
+                width: 20rem;
+                margin: 0; // auto überschreiben
+            }
+
+            & li {
+                list-style: none;
+            }
+        }
+
+        &-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 9rem;
+            width: 9rem;
+            padding: 1rem;
+            margin: 4rem auto; // Mobile
+
+            @include respond-to(medium) {
+                margin: 0;
+            }
+
+            &-img {
+                width: 80%; // Mobile
+                margin: 0 auto;
+
+                @include respond-to(medium) {
+                    width: 100%;
+                }
+            }
+        }
+
+        &-link {
+            display: flex;
+            width: 22rem;
+            justify-content: space-around;
+            align-items: center;
+            font-size: 1.2rem;
+            margin: 0 auto; // Mobile
+
+            @include respond-to(medium) {
+                margin: 0;
+            }
+
+            & a {
+                color: $secondary-color;
+                text-decoration: none;
+                transition: color 0.3s ease;
+                cursor: default; // Mobile
+
+                @include respond-to(medium) {
+                    cursor: pointer;
+                }
+
+                &.active, &:hover {
+                    color: $nav-color;
+                }
+            }
+        }
+    }
+
+    &__last {
+        margin: 3rem auto 0 auto;
+
+        &-bottomtext {
+            font-size: 1rem;
+            text-align: center;
+            color: $secondary-color;
+        }
+
+        &-disclaimer {
+            font-size: 1rem;
+            color: $secondary-color;
+            text-align: center;
+            margin: 0 5px;
+        }
+    }
+}
+
+.fa-facebook,
+.fa-instagram,
+.fa-location-dot {
+    color: $secondary-color;
+    font-size: $p-font;
+}
