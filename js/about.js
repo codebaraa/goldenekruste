@@ -1,3 +1,4 @@
+import '/scss/about.scss';
 const allSections = document.querySelectorAll('.section')
 const hamMenu = document.querySelector('.menu__bar');
 const offScreenMenu = document.querySelector('.menu__offscreen');

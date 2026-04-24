@@ -1,3 +1,4 @@
+import '/scss/kurse.scss';
 document.addEventListener('DOMContentLoaded', function () {
     const hamMenu = document.querySelector('.menu__bar');
     const offScreenMenu = document.querySelector('.menu__offscreen');

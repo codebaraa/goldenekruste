@@ -1,3 +1,4 @@
+import '/scss/cont.scss';
 const hamMenu = document.querySelector('.menu__bar');
 const offScreenMenu = document.querySelector('.menu__offscreen');
 const spans = document.querySelectorAll('.span')

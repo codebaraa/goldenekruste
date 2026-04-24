@@ -82,7 +82,7 @@ body {
 			font-size: 2.5rem;
 		}
 		@include respond-to(large) {
-			font-size: $primary-font;
+			font-size: 3.5rem;
 		}
 	}
 }
@@ -305,7 +305,7 @@ body {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		max-width: 90rem;
+		max-width: 100%;
 		&.top-bottom {
 			margin: 5rem 9rem;
 			padding: 0;
@@ -359,12 +359,15 @@ body {
 			align-items: center;
 			background-color: $white-color;
 			border-radius: 20px;
-			width: 30rem;
+			width: 40rem;
 
 			@include respond-to(medium) {
 				flex-direction: row;
+				width: 70rem;
 				padding: 2rem 5rem;
-				max-width: 90rem;
+			}
+			@include respond-to(large) {
+				width: 90rem;
 			}
 
 			& p {
@@ -382,10 +385,13 @@ body {
 				}
 				@include respond-to(medium) {
 					width: 60%;
-					font-size: 1.7rem;
 					padding: 0 1rem;
-					line-height: 3.2rem;
-					text-align: justify;
+					line-height: 2.6rem;
+					text-align: center;
+				}
+				@include respond-to(large) {
+					font-size: 1.7rem;
+					line-height: 3rem;
 				}
 			}
 
@@ -406,8 +412,6 @@ body {
 				}
 				@include respond-to(medium) {
 					padding: 0;
-				}
-				@include respond-to(large) {
 					width: 40%;
 				}
 			}
@@ -434,8 +438,6 @@ body {
 				}
 				@include respond-to(medium) {
 					padding: 0;
-				}
-				@include respond-to(large) {
 					width: 40%;
 				}
 			}
